@@ -1,0 +1,33 @@
+%% Separate paired-condition analysis of signed EC-minus-EO spectral change.
+clear; clc;
+root = fileparts(fileparts(mfilename('fullpath')));
+addpath(fullfile(root,'lib'));
+cfg = v37_setup();
+out = fullfile(cfg.output_root,'04_supervised_discovery');
+if ~exist(out,'dir'), mkdir(out); end
+D = load(fullfile(cfg.output_root,'03_participant_features', ...
+    'A03_participant_spectral_landscapes.mat'),'dataset');
+dataset = D.dataset; keep = dataset.has_paired_conditions;
+dataset.participants = dataset.participants(keep,:);
+dataset.average_relative_log_spectrum = ...
+    dataset.signed_EC_minus_EO_log_spectrum(keep,:,:);
+dataset.signed_EC_minus_EO_log_spectrum = ...
+    dataset.signed_EC_minus_EO_log_spectrum(keep,:,:);
+fields = fieldnames(dataset.technical);
+for i = 1:numel(fields)
+    dataset.technical.(fields{i}) = dataset.technical.(fields{i})(keep,:,:);
+end
+y = double(dataset.participants.group == "MDD");
+result = v37_run_nested_cv(dataset,cfg,y);
+summary = table(height(dataset.participants),result.neural_AUC, ...
+    result.demographic_AUC,result.neural_log_loss,result.demographic_log_loss,false,0, ...
+    'VariableNames',{'n_paired_discovery_participants','EC_minus_EO_neural_AUC', ...
+    'age_sex_only_AUC','neural_log_loss','age_sex_log_loss', ...
+    'age_sex_used_for_neural_selection','validation_participants_read'});
+writetable(summary,fullfile(out,'A04c_paired_EC_EO_summary.csv'));
+patch_summary = table(result.patch_id,result.eligibility_count,result.selection_count, ...
+    result.selection_frequency_when_eligible,result.mean_coefficient_magnitude_when_eligible, ...
+    'VariableNames',{'patch_id','eligible_outer_folds','selected_outer_folds', ...
+    'selection_frequency_when_eligible','mean_coefficient_magnitude_when_eligible'});
+writetable(patch_summary,fullfile(out,'A04c_paired_EC_EO_patch_stability.csv'));
+save(fullfile(out,'A04c_paired_EC_EO_discovery.mat'),'result','dataset','cfg','-v7.3');

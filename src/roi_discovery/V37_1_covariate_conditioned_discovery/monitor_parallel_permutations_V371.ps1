@@ -1,0 +1,7 @@
+$d='C:\MATLAB\2026 TDBRAIN V31 source ROI discovery\derivatives\V37_1_covariate_conditioned_discovery';$logs=Join-Path $d 'logs\parallel_permutations';$manifest=Join-Path $logs 'worker_pids.csv';$shards=Join-Path $d '03_permutation\shards'
+$legacy=3;$files=@();if(Test-Path $shards){$files=@(Get-ChildItem -LiteralPath $shards -Filter 'permutation_*.mat')};$completed=$legacy+$files.Count
+Write-Host "V37.1 parallel permutation status at $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+if(Test-Path $manifest){$rows=Import-Csv $manifest;$status=foreach($row in $rows){$p=Get-Process -Id ([int]$row.pid) -ErrorAction SilentlyContinue;[pscustomobject]@{Worker=$row.worker;PID=$row.pid;Running=[bool]$p;CPU_s=if($p){[math]::Round($p.CPU,1)}else{$null};Started=$row.started}};$status|Format-Table -AutoSize|Out-String|Write-Host}else{Write-Host 'No parallel worker manifest.'}
+Write-Host "Completed valid permutations: $completed/1000 (legacy=$legacy, shards=$($files.Count))"
+if($files.Count){$times=$files|Sort-Object LastWriteTime;$first=$times[0];$last=$times[-1];Write-Host "Latest shard: $($last.Name) at $($last.LastWriteTime)"}
+if(Test-Path $manifest){foreach($row in (Import-Csv $manifest)){if(Test-Path $row.stdout){$last=Get-Content $row.stdout -Tail 1;Write-Host "Worker $($row.worker): $last"};if((Test-Path $row.stderr)-and(Get-Item $row.stderr).Length-gt 0){Write-Host "Worker $($row.worker) stderr:";Get-Content $row.stderr -Tail 5|Write-Host}}}

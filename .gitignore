@@ -1,0 +1,40 @@
+# Generated and protected material
+
+# Participant/raw data and derivatives
+/data/
+**/derivatives/
+**/outputs/
+**/output/
+**/cache/
+**/caches/
+**/logs/
+
+# Common EEG/SPM data objects
+*.bdf
+*.eeg
+*.set
+*.fdt
+*.dat
+*.nii
+*.nii.gz
+*.gii
+*.img
+*.hdr
+*.mat
+!src/preprocessing/config/*.mat
+
+# Local configuration and credentials
+local_paths.m
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*token*
+*credential*
+
+# MATLAB/OS/editor generated files
+*.asv
+*.m~
+.DS_Store
+Thumbs.db
