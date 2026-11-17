@@ -1,0 +1,8 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the archived release."
+title: "Paper 1 TDBRAIN ROI Discovery Pipeline"
+authors:
+  - family-names: Bailey
+    given-names: Zack
+version: 0.1.0
+url: "https://github.com/zacriah18/paper1-tdbrain-roi-discovery"

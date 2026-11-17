@@ -27,7 +27,7 @@ Stage E estimates cortical source activity. Stages F/G in the dataset folder are
 
 ## Status and evidence date
 
-Snapshot staged 17 November 2026. It contains 186 selected MATLAB, PowerShell and Markdown files plus the source manifest. The source manifest records file hashes; it does not establish analytical correctness, exact data availability or successful reruns. No analysis or test was run while preparing this repository.
+Snapshot staged 17 November 2026 and pushed to GitHub on 18 November 2026. It contains 186 selected MATLAB, PowerShell and Markdown files plus the source manifest. The source manifest records file hashes; it does not establish analytical correctness, exact data availability or successful reruns. No analysis or test was run while preparing this repository.
 
 ## Decisions and constraints
 
@@ -35,7 +35,7 @@ Snapshot staged 17 November 2026. It contains 186 selected MATLAB, PowerShell an
 - Preserve source files and scientific locks in this snapshot; do not edit the original working analysis trees through this repository setup.
 - V37/V37.1 currently set up MATLAB paths that include V32-V36 and inherit earlier configuration. Those legacy code branches are therefore included as inherited source, while their old data/results are excluded.
 - The copied configuration still contains historical machine-specific absolute paths. A reviewed portability change is needed before this repository can be run from a new checkout.
-- No license is declared yet. Confirm code ownership and any redistribution terms before making the repository public or adding a license.
+- No license is declared yet. Confirm code ownership and redistribution terms before reuse or further distribution.
 - Validation access guards and locked cohort/split definitions are scientific constraints. Preserve them during portability work.
 
 ## Open work
@@ -54,4 +54,4 @@ Snapshot staged 17 November 2026. It contains 186 selected MATLAB, PowerShell an
 
 ## Recent changes
 
-See [`CHANGELOG.md`](CHANGELOG.md). This repository folder has not been moved from its initial staging location.
+See [`CHANGELOG.md`](CHANGELOG.md) and [`CITATION.cff`](CITATION.cff). The initial v0.1.0 release notes are in [`docs/release-notes-v0.1.0.md`](docs/release-notes-v0.1.0.md).
